@@ -6,12 +6,12 @@
 
 Audit lead routing rules for owner gaps, region mismatch, and fallback behavior. It solves review drift by turning plain-text plans into deterministic CI-friendly findings.
 
-## Input Contract 30
+## Input Contract
 
 Accepts lead routing rule. The reader supports plain text, JSON, JSONL, and CSV so the
 tool can fit into scripts, CI jobs, and review exports.
 
-## CLI Walkthrough 30
+## CLI Walkthrough
 
 ```bash
 python -m pip install -e ".[dev]"
@@ -20,7 +20,7 @@ lead-routing-lint examples/sample.txt --json --fail-on medium
 python -m lead_routing_lint --help
 ```
 
-## Rule Surface 30
+## Rule Surface
 
 | Rule | Severity | Meaning |
 |---|---:|---|
@@ -28,7 +28,7 @@ python -m lead_routing_lint --help
 | `missing-fallback` | medium | fallback route missing |
 | `territory-mismatch` | low | territory mismatch detected |
 
-## Validation Notes 30
+## Validation Notes
 
 ```bash
 ruff check .
