@@ -1,50 +1,39 @@
-<p align="center">
-  <img src="assets/readme-cover.svg" alt="Lead Routing Lint cover" width="100%" />
-</p>
-
 # Lead Routing Lint
 
-![stack](https://img.shields.io/badge/stack-Python-2563eb?style=flat-square) ![python](https://img.shields.io/badge/python-3.11-16a34a?style=flat-square) ![license](https://img.shields.io/badge/license-MIT-dc2626?style=flat-square) ![ci](https://img.shields.io/badge/ci-GitHub%20Actions-7c3aed?style=flat-square)
+![Lead Routing Lint cover](assets/readme-cover.svg)
 
-Audit lead routing rules for owner gaps, region mismatch, and fallback behavior.
+Audit lead routing rules for owner gaps, region mismatch, and fallback behavior. The idea is simple: give Lead Routing Lint the local file or fixture, get a readable result, and decide what needs attention before the next handoff.
 
-## Why it exists
+## Lead Routing Lint catches
 
-Small review tasks are easy to skip when the signal lives in notes, spreadsheets, or loosely formatted exports. `lead-routing-lint` turns those checks into a repeatable command with plain findings and CI-friendly exit codes.
+- `missing-owner` (high): lead owner missing. Fix: assign route owner.
+- `missing-fallback` (medium): fallback route missing. Fix: add fallback queue.
+- `territory-mismatch` (low): territory mismatch detected. Fix: verify territory mapping.
 
-## Quick run
+## A normal pass
 
 ```bash
+git clone https://github.com/mertefekurt/lead-routing-lint.git
+cd lead-routing-lint
+python -m venv .venv
+source .venv/bin/activate
 python -m pip install -e ".[dev]"
 lead-routing-lint examples/sample.txt
-lead-routing-lint examples/sample.txt --json --fail-on medium
+lead-routing-lint examples/sample.txt --json
 ```
 
-## Rule set
+The input can be text, JSON, JSONL, or CSV. Use `--json` when another script needs the result instead of a Markdown report.
 
-| Rule | Severity | What it catches |
-| --- | --- | --- |
-| `missing-owner` | high | lead owner missing |
-| `missing-fallback` | medium | fallback route missing |
-| `territory-mismatch` | low | territory mismatch detected |
-
-## Input
-
-The reader accepts plain text, JSON, JSONL, and CSV. That keeps it useful for hand-written notes, review exports, and small automation jobs.
-
-## Sample risky input
+## A deliberately bad line
 
 ```text
 region EMEA owner none fallback missing territory mismatch
 ```
 
-## Development
+## Maintainer loop
 
 ```bash
-python -m pip install -e ".[dev]"
 ruff check .
 pytest
 python -m lead_routing_lint --help
 ```
-
-`cli.py` handles arguments, `core.py` reads and evaluates records, and `rules.py` keeps the Lead Routing Lint policy easy to review.
